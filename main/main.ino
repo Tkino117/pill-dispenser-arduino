@@ -80,16 +80,13 @@ void execute(String cmd) {
       err = true;
     }
     if (!err) {
-      // execute here!
       Serial.print("executing cmd : dispense ");
       Serial.print(id);
       Serial.print(" ");
       Serial.print(count);
       Serial.println();
+      dispense(id, count);
     }
-  }
-  else if (words[0] == "check") {
-    // execute here!
   }
   else {
     err = true;
@@ -98,6 +95,10 @@ void execute(String cmd) {
   if (err) {
     Serial.println("ERROR : cmd executing error. word is invalid.");
   }
+}
+
+void dispense(int id, int count) {
+  // dispense pill here!
 }
 
 int tmp = 0;

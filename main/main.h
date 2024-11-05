@@ -2,5 +2,5 @@
 #include "wifi.h"
 
 
-char host[] = "192.168.1.188";
+char host[] = "192.168.2.106";
 int port = 8080;
