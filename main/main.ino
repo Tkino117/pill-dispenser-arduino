@@ -8,6 +8,10 @@ const int Light_sencer_Pin = 5; /*光センサーPIN　5番ピン*/
 const int SvPin_A = 9, SvPin_B = 10, SvPin_C = 11; /*サーボモータのPIN番号設定　A-9 B-10 C-11*/
 int Light_sencer, millis_buf;
 
+const int servoA_360 = 780;
+const int servoB_360 = 800;
+const int servoC_360 = 795;
+
 LedMatrixController led;
 WiFiController wifi;
 WiFiClient client;
@@ -102,6 +106,22 @@ void execute(String cmd) {
       dispense(id, count);
     }
   }
+  else if (words[0] == "servo" && wordCount == 3) {
+    int id, deg;
+    id = words[1].toInt();
+    deg = words[2].toInt();
+    if (id == 0 && words[1] != "0" || deg == 0 && words[2] != "0") {
+      err = true;
+    }
+    if (!err) {
+      Serial.print("executing cmd : servo ");
+      Serial.print(id);
+      Serial.print(" ");
+      Serial.print(deg);
+      Serial.println();
+      adjustServo(id, deg);
+    }
+  }
   else {
     err = true;
   }
@@ -113,10 +133,10 @@ void execute(String cmd) {
 
 void dispense(int id, int count) {
   // dispense pill here!
-    if(id == 1){
+  if(id == 1){
     for(int i = 0; i < count; i++){
       millis_buf = millis();
-      while(millis() - millis_buf < 780){
+      while(millis() - millis_buf < servoA_360){
         servoA.write(0);
       }
       servoA.write(90);
@@ -125,7 +145,7 @@ void dispense(int id, int count) {
   else if(id == 2){
     for(int i = 0; i < count; i++){
       millis_buf = millis();
-      while(millis() - millis_buf < 800){
+      while(millis() - millis_buf < servoB_360){
         servoB.write(0);
       }
       servoB.write(90);
@@ -134,13 +154,14 @@ void dispense(int id, int count) {
   else if(id == 3){
     for(int i = 0; i < count; i++){
       millis_buf = millis();
-      while(millis() - millis_buf < 790){
+      while(millis() - millis_buf < servoC_360){
         servoC.write(0);
       }
       servoC.write(90);
     }
   }
 }
+
 
 int tmp = 0;
 String needsToSendData() {
@@ -150,6 +171,35 @@ String needsToSendData() {
   }
   tmp = millis();
   return res;
+}
+
+void adjustServo(int id, int deg) {
+  int tmp = millis();
+  int write;
+  if (deg >= 0) write = 0;
+  else {
+    deg = -deg;
+    write = 180;
+  }
+
+  if (id == 1) {
+    while(millis() - tmp < servoA_360 * deg / 360){
+      servoA.write(write);
+    }
+    servoA.write(90);
+  }
+  else if (id == 2) {
+    while(millis() - tmp < servoB_360 * deg / 360){
+      servoB.write(write);
+    }
+    servoB.write(90);
+  }
+  else if (id == 3) {
+    while(millis() - tmp < servoC_360 * deg / 360){
+      servoC.write(write);
+    }
+    servoC.write(90);
+  }
 }
 
 void reconnect() {
