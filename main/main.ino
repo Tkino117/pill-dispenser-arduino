@@ -1,4 +1,12 @@
 #include "main.h"
+#include "Servo.h"
+Servo servoA;
+Servo servoB;
+Servo servoC;
+
+const int Light_sencer_Pin = 5; /*光センサーPIN　5番ピン*/
+const int SvPin_A = 9, SvPin_B = 10, SvPin_C = 11; /*サーボモータのPIN番号設定　A-9 B-10 C-11*/
+int Light_sencer, millis_buf;
 
 LedMatrixController led;
 WiFiController wifi;
@@ -6,6 +14,12 @@ WiFiClient client;
 
 void setup() {
   Serial.begin(115200);
+
+  pinMode(Light_sencer_Pin, INPUT);
+  servoA.attach(SvPin_A);  /*サーボ設定*/
+  servoB.attach(SvPin_B);
+  servoC.attach(SvPin_C);
+
   led.init();
   wifi.connect();
   Serial.print("try to connect to : ");
@@ -99,6 +113,33 @@ void execute(String cmd) {
 
 void dispense(int id, int count) {
   // dispense pill here!
+    if(id == 1){
+    for(int i = 0; i < count; i++){
+      millis_buf = millis();
+      while(millis() - millis_buf < 780){
+        servoA.write(0);
+      }
+      servoA.write(90);
+    }
+  }
+  else if(id == 2){
+    for(int i = 0; i < count; i++){
+      millis_buf = millis();
+      while(millis() - millis_buf < 800){
+        servoB.write(0);
+      }
+      servoB.write(90);
+    }
+  }
+  else if(id == 3){
+    for(int i = 0; i < count; i++){
+      millis_buf = millis();
+      while(millis() - millis_buf < 790){
+        servoC.write(0);
+      }
+      servoC.write(90);
+    }
+  }
 }
 
 int tmp = 0;
