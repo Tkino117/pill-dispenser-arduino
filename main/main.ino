@@ -6,6 +6,7 @@ Servo servoC;
 
 const int Light_sencer_Pin = 5; /*光センサーPIN　5番ピン*/
 const int SvPin_A = 9, SvPin_B = 10, SvPin_C = 11; /*サーボモータのPIN番号設定　A-9 B-10 C-11*/
+const int LED_Pin = 3, Buz_Pin = 4; /*追加　LEDPIN3番ピン　ブザーPIN4番ピン*/
 int Light_sencer, millis_buf;
 
 const int servoA_360 = 780;
@@ -20,6 +21,8 @@ void setup() {
   Serial.begin(115200);
 
   pinMode(Light_sencer_Pin, INPUT);
+  pinMode(LED_Pin, OUTPUT); /*追加*/
+
   servoA.attach(SvPin_A);  /*サーボ設定*/
   servoB.attach(SvPin_B);
   servoC.attach(SvPin_C);
@@ -160,16 +163,26 @@ void dispense(int id, int count) {
       servoC.write(90);
     }
   }
+  digitalWrite(LED_Pin, HIGH);/*追加　薬排出時LED点灯*/
+  tone(Buz_Pin,440);
 }
 
 
 int tmp = 0;
+int Old;
 String needsToSendData() {
   String res = "0";
-  if ((tmp / 1000) % 10 != 0 && (millis() / 1000) % 10 == 0) {
+  /*追加　排出後かつ光センサー反応時　LEDを消灯*/
+  int Light_Sensor = digitalRead(Light_sencer_Pin);
+  // Serial.println(Light_Sensor);
+  // delay(100);
+  if(Old == 1 && Light_Sensor == 0){
+    digitalWrite(LED_Pin, LOW);
+    noTone(Buz_Pin);
     res = "take pill";
+    Serial.println("here2");
   }
-  tmp = millis();
+  Old = Light_Sensor;
   return res;
 }
 
