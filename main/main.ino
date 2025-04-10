@@ -4,7 +4,7 @@ Servo servoA;
 Servo servoB;
 Servo servoC;
 
-const int Light_sencer_Pin = 5; /*光センサーPIN　5番ピン*/
+const int Light_sencer_Pin = 5; /*光センサーPIN　5番ピン */
 const int SvPin_A = 9, SvPin_B = 10, SvPin_C = 11; /*サーボモータのPIN番号設定　A-9 B-10 C-11*/
 const int LED_Pin = 3, Buz_Pin = 4; /*追加　LEDPIN3番ピン　ブザーPIN4番ピン*/
 int Light_sencer, millis_buf;
