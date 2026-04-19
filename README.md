@@ -1,6 +1,9 @@
 # Smart Pill Dispenser (Client)
 
-Arduino 側のクライアントコード。Wi-Fi 経由でサーバーと TCP 接続し、サーバーから送られてくる指示に従って指定時刻に薬を排出する。
+Arduino 側のクライアントコード。
+Wi-Fi 経由でサーバーと TCP 接続し、サーバーから送られてくる指示に従って指定時刻に薬を排出する。
+
+サーバーリポジトリ：https://github.com/Tkino117/pill-dispenser-server
 
 ## 概要
 
