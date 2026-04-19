@@ -60,13 +60,3 @@ TCP テキストベース。各メッセージは `\r` で区切られる。
 2. `main/main.h` の `host` / `port` をサーバーの IP / ポートに設定する
 3. Arduino IDE で `main/main.ino` を開き、ボードに書き込む
 4. シリアルモニタ(115200 bps)で接続ログを確認する
-
-## サーボ調整
-
-サーボごとに「360 度回転に要する時間(ms)」を `main.ino` 冒頭で定義している。個体差で薬が正しく 1 錠ずつ落ちない場合はここを調整する。
-
-```cpp
-const int servoA_360 = 780;
-const int servoB_360 = 800;
-const int servoC_360 = 795;
-```
